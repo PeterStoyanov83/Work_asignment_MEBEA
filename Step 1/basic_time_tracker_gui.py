@@ -1,6 +1,11 @@
+
+
 """ Time tracker widget app By Peter Stoyanov.
-this is a step one. The app displays current time, time of logging in, time remaining for work. as well as
+this is a step one. The app displays current time, time of logging in,
+time remaining for work. as well as
 a editable lunch break reminder   """
+
+# design it minimalistic
 
 from tkinter import *
 from tkinter import font
@@ -24,12 +29,19 @@ def update_clock():
     check_for_lunch_break()
 
 
+def transmitter(message):
+    # Code to send a message or signal to another device
+    pass
+
+
 def check_for_lunch_break():
     if lunch_break_set:
         current_hour = int(time.strftime("%H"))
         current_minute = int(time.strftime("%M"))
         if current_hour == lunch_break_hour and current_minute == lunch_break_minute:
             playsound('C:\Windows\Media\Alarm08.wav')
+            #figure out how to play sound 1 time
+
 
 
 def set_lunch_break():
