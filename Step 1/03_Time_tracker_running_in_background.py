@@ -28,15 +28,16 @@ def update_clock():
         f"Remaining Time: {remaining_time}", "Time Tracker Update", hours, minutes, seconds)
 
 
-def transmit_signal(message, title, hours, minutes, seconds):
-    toaster = ToastNotifier()
-    toaster.show_toast(
-        title=title,
-        msg=message,
-        duration=5
-    )
 
+toaster = ToastNotifier()
+
+
+def transmit_signal(message, title, hours, minutes, seconds):
     # Show live update in the taskbar
+    if toaster.notification_active():
+        return
+    toaster.show_toast(title=title, msg=message, duration=5)
+
     img = Image.new('RGB', (100, 100), color=(73, 109, 137))
     d = ImageDraw.Draw(img)
     d.text((5, 5), f"{hours:02}:{minutes:02}:{seconds:02}", fill=(255, 255, 0))
@@ -106,14 +107,15 @@ lunch_break_entry.insert(0, "12:00")
 set_lunch_break_button = Button(root, text="Set", command=set_lunch_break)
 set_lunch_break_button.pack()
 
-start_time = time.time()
+# start_time = time.time()
 
-lunch_break_set = False
+# lunch_break_set = False
 lunch_break_hour = None
 lunch_break_minute = None
 
 transmit_label = Label(root, text='')
 transmit_label.pack()
+
 
 update_clock()
 
