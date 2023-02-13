@@ -8,6 +8,8 @@ from PIL import Image, ImageDraw
 
 
 def update_clock():
+    """This function updates the clock display and schedules itself to run again after 1 second."""
+
     current_time = time.strftime("%Y/%m/%d %H:%M:%S")
     login_time = time.strftime("%H:%M:%S", time.localtime(start_time))
     elapsed_time = int(time.time() - start_time)
@@ -35,12 +37,14 @@ def transmit_signal(message, title, hours, minutes, seconds):
     )
 
     # Show live update in the taskbar
-    img = Image.new('RGB', (30, 30), color=(73, 109, 137))
+    img = Image.new('RGB', (100, 100), color=(73, 109, 137))
     d = ImageDraw.Draw(img)
     d.text((5, 5), f"{hours:02}:{minutes:02}:{seconds:02}", fill=(255, 255, 0))
     icon = pystray.Icon("name", img, "Time Tracker")
     icon.run()
 
+
+# sets the lunch break time and disables the lunch break entry field.
 def set_lunch_break():
     global lunch_break_set
     global lunch_break_hour
@@ -52,6 +56,7 @@ def set_lunch_break():
     set_lunch_break_button.config(text='Edit', command=edit_lunch_break)
 
 
+# This function enables editing of the lunch break time and enables the lunch break entry field.
 def edit_lunch_break():
     global lunch_break_set
     lunch_break_set = False
@@ -77,8 +82,6 @@ def calculate_remaining_time():
     hours, remainder = divmod(remaining_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     return f"{hours:02}:{minutes:02}:{seconds:02}"
-
-
 
 
 start_time = time.time()
