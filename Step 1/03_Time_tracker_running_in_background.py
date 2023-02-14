@@ -7,6 +7,7 @@ import pystray
 import time
 
 
+
 def update_clock():
     """This function updates the clock display and schedules itself to run again after 1 second."""
 
