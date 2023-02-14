@@ -1,10 +1,10 @@
-from tkinter import *
-from tkinter import font
-import time
-from playsound import playsound
 from win10toast import ToastNotifier
-import pystray
 from PIL import Image, ImageDraw
+from playsound import playsound
+from tkinter import font
+from tkinter import *
+import pystray
+import time
 
 
 def update_clock():
@@ -28,12 +28,9 @@ def update_clock():
         f"Remaining Time: {remaining_time}", "Time Tracker Update", hours, minutes, seconds)
 
 
-
-toaster = ToastNotifier()
-
-
 def transmit_signal(message, title, hours, minutes, seconds):
-    # Show live update in the taskbar
+    '''Show live update in the taskbar'''
+
     if toaster.notification_active():
         return
     toaster.show_toast(title=title, msg=message, duration=5)
@@ -45,8 +42,8 @@ def transmit_signal(message, title, hours, minutes, seconds):
     icon.run()
 
 
-# sets the lunch break time and disables the lunch break entry field.
 def set_lunch_break():
+    """the function sets the lunch break time and disables the lunch break entry field."""
     global lunch_break_set
     global lunch_break_hour
     global lunch_break_minute
@@ -57,8 +54,8 @@ def set_lunch_break():
     set_lunch_break_button.config(text='Edit', command=edit_lunch_break)
 
 
-# This function enables editing of the lunch break time and enables the lunch break entry field.
 def edit_lunch_break():
+    """This function enables editing of the lunch break time and enables the lunch break entry field."""
     global lunch_break_set
     lunch_break_set = False
     lunch_break_entry.config(state='normal')
@@ -71,10 +68,10 @@ def check_for_lunch_break():
         current_minute = int(time.strftime("%M"))
         if current_hour == lunch_break_hour and current_minute == lunch_break_minute:
             playsound('C:\Windows\Media\Alarm08.wav')
-            # figure out how to play sound 1 time
 
 
 def calculate_remaining_time():
+    """this function calculates remaining time if the end of the working day is considered to be 18:30 each day"""
     end_of_day = 18 * 3600
     current_seconds = int(time.time() - time.mktime(time.localtime()[:3] + (0, 0, 0, 0, 0, 0)))
     remaining_seconds = end_of_day - current_seconds
@@ -85,9 +82,11 @@ def calculate_remaining_time():
     return f"{hours:02}:{minutes:02}:{seconds:02}"
 
 
+toaster = ToastNotifier()
 start_time = time.time()
 lunch_break_set = False
 
+# the window shaping
 root = Tk()
 root.geometry("400x330")
 root.attributes("-topmost", True)
@@ -95,10 +94,12 @@ root.attributes("-toolwindow", True)
 root.resizable(False, False)
 root.title("Time Tracker")
 
+# clock appearance
 clock_font = font.Font(family="calibri", size=15, weight="normal")
 clock_label = Label(root, text="", font=clock_font)
 clock_label.pack(pady=20)
 
+# lunch break labels and buttons
 lunch_time_label = Label(root, text="Lunch Time (HH:MM):")
 lunch_time_label.pack()
 lunch_break_entry = Entry(root)
@@ -107,15 +108,11 @@ lunch_break_entry.insert(0, "12:00")
 set_lunch_break_button = Button(root, text="Set", command=set_lunch_break)
 set_lunch_break_button.pack()
 
-# start_time = time.time()
-
-# lunch_break_set = False
 lunch_break_hour = None
 lunch_break_minute = None
 
 transmit_label = Label(root, text='')
 transmit_label.pack()
-
 
 update_clock()
 
