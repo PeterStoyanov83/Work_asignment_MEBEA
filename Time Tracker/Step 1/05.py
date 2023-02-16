@@ -11,7 +11,7 @@ def show_window():
     root.deiconify()
 
 
-icon = QIcon("P:\Peter\Work Asignment\Work_asignment_MEBEA\Step 1\me_tracker.png")
+icon = QIcon("/Time Tracker/Step 1/me_tracker.png")
 
 
 def update_icon(tray):
