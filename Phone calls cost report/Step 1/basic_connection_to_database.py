@@ -1,14 +1,14 @@
 """create a python script that extracts phone call durations/costs
-from a database on a server and outputs a costs by department and time period use odoo"""
+from a database on a server and outputs a costs by department and time period"""
 
 import psycopg2
 
 # Connect to the database
 conn = psycopg2.connect(
     host="52.166.243.62",
-    database="hr.employee",
-    user="petar.stoyanov@mebea.ch",
-    password="Start!2023",
+    database="bitnami",
+    user="postgres",
+    password="Pratteln.4133",
     port="5432"
 )
 
@@ -37,10 +37,11 @@ results = cur.fetchall()
 for result in results:
     department = result[0]
     total_duration = result[1]
-    total_cost = result[2]
+    total_cost = result[2]  # multiply with price per second
     month_year = result[3].strftime("%Y-%m")
     print(f"{department}, {month_year}: Total duration = {total_duration} seconds, Total cost = {total_cost} ")
 
 # Close the database connection
 cur.close()
 conn.close()
+print(results)
