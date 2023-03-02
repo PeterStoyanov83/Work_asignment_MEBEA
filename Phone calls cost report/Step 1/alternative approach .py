@@ -24,7 +24,8 @@ results = pd.DataFrame(cursor.fetchall(),
                        columns=['Employee Name', 'Total Duration (minutes)', 'Department', 'Manager'])
 
 # Export the results to a CSV file and puts it in the same directory with the python code file
-results.to_csv('phone_calls1.csv', index=False)
+results.to_csv('phone_calls.csv', index=False)
+print('File created! take a look in the folder containing this python script. ')
 
 # Commit the changes to the database
 cnx.commit()
