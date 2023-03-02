@@ -5,11 +5,11 @@ import psycopg2
 
 # Connect to the database
 conn = psycopg2.connect(
-    host="52.166.243.62",
-    database="bitnami",
-    user="postgres",
-    password="Pratteln.4133",
-    port="5432"
+    host="mysql1.webland.ch",
+    database="walld_mebea",
+    user="walld_mebea",
+    password="nyrVN49VniKJvfU",
+    # port="5432"
 )
 
 # Create a cursor object
