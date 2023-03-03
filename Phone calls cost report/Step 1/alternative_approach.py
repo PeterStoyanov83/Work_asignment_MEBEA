@@ -14,14 +14,20 @@ cnx = mysql.connector.connect(user='walld_mebea', password='nyrVN49VniKJvfU',
                               host='mysql1.webland.ch', database='walld_mebea')
 cursor = cnx.cursor()
 
-# Query to get the total duration of phone calls for each department
+# Query to get the total duration of phone calls for each department and the total duration of phone calls from the phonecalls_with_costs entity
 query = """
-    SELECT t_employees.Name, SUM(telephone_calls.Gespraechsdauer) as total_duration, t_departments.Name as Department, 
-    t_departments.manager
+SELECT t_employees.Name, SUM(telephone_calls.Gespraechsdauer) as total_duration, t_departments.Name as Department, 
+t_departments.manager,
+       IFNULL(pcc.total_duration, 0) as phone_calls_with_costs_total_duration
 FROM telephone_calls
 INNER JOIN t_employees ON telephone_calls.Rufnummer = t_employees.phone
 INNER JOIN t_departments ON t_employees.department_id = t_departments.id
-GROUP BY t_employees.Name, Department, t_departments.manager
+LEFT JOIN (
+    SELECT department, SUM(duration_minutes) as total_duration
+    FROM phonecalls_with_cost
+    GROUP BY department
+) as pcc ON t_departments.Name = pcc.department
+GROUP BY t_employees.Name, Department, t_departments.manager, pcc.total_duration
 """
 
 # Execute the query
@@ -29,8 +35,8 @@ cursor.execute(query)
 
 # Fetch the results into a pandas dataframe
 results = pd.DataFrame(cursor.fetchall(),
-                       columns=['Employee Name', 'Total Duration (minutes)', 'Department', 'Manager'])
-
+                       columns=['Employee Name', 'Total Duration (minutes)', 'Department', 'Manager',
+                                'Phone Calls with Costs Total Duration (minutes)'])
 # Generate a file name with a suffix number that doesn't already exist
 file_name = "phone_calls.csv"
 max_attempts = 100
