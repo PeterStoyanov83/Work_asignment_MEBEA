@@ -1,5 +1,6 @@
 import mysql.connector
 import pandas as pd
+import os.path
 
 # Connect to the MySQL database
 cnx = mysql.connector.connect(user='walld_mebea', password='nyrVN49VniKJvfU',
@@ -23,8 +24,19 @@ cursor.execute(query)
 results = pd.DataFrame(cursor.fetchall(),
                        columns=['Employee Name', 'Total Duration (minutes)', 'Department', 'Manager'])
 
+# Generate a file name with a suffix number that doesn't already exist
+file_name = "phone_calls.csv"
+max_attempts = 100
+suffix = 1
+
+while os.path.isfile(file_name) and suffix <= max_attempts:
+    suffix += 1
+    file_name = 'phone_calls' + str(suffix) + '.csv'
+if suffix > max_attempts:
+    raise Exception("Unable to generate a unique file name.")
+
 # Export the results to a CSV file and puts it in the same directory with the python code file
-results.to_csv('phone_calls.csv', index=False)
+results.to_csv(file_name, index=False, sep=';')
 print('File created! take a look in the folder containing this python script. ')
 
 # Commit the changes to the database
