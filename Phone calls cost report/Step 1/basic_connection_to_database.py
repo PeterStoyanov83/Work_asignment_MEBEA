@@ -1,6 +1,7 @@
 """create a python script that extracts phone call durations/costs
 from a database on a server and outputs a costs by department and time period"""
 
+
 import psycopg2
 
 # Connect to the database

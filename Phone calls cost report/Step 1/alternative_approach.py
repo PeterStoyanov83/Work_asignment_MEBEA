@@ -1,3 +1,10 @@
+'''this is a project that enters a database located in a server.
+
+STEP 1 :
+Makes a sellection of several columns and
+outputs a csv file with the result. the conditions in query are make a list by departments and calculate the total
+minutes each department spent on the phone. '''
+
 import mysql.connector
 import pandas as pd
 import os.path
